@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.projetospringbootmongodb.curso.domain.Post;
 import com.projetospringbootmongodb.curso.domain.User;
 import com.projetospringbootmongodb.curso.dto.UserDTO;
 import com.projetospringbootmongodb.curso.services.UserService;
@@ -46,6 +47,13 @@ public class UserResource {
 		List<UserDTO> listUserDTO = listUser.stream().map(u -> new UserDTO(u)).collect(Collectors.toList());
 
 		return ResponseEntity.ok().body(listUserDTO);
+	}
+
+	@RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+	public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+		User user = userService.findById(id);
+
+		return ResponseEntity.ok().body(user.getPosts());
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
